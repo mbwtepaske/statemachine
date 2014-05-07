@@ -18,28 +18,34 @@
 
 namespace Appccelerate.StateMachine
 {
-    using System;
+  using System;
+
+  /// <summary>
+  /// Provides information about a state machine.
+  /// </summary>
+  /// <typeparam name="TState">The type of the state.</typeparam>
+  /// <typeparam name="TEvent">The type of the event.</typeparam>
+  // ReSharper disable once UnusedTypeParameter because of symmetry with all other interface declarations (all have states and events)
+  public interface IStateMachineInformation<out TState, TEvent>
+    where TState : IComparable
+    where TEvent : IComparable
+  {
+    /// <summary>
+    /// Gets the name of this instance.
+    /// </summary>
+    /// <value>The name of this instance.</value>
+    string Name
+    {
+      get;
+    }
 
     /// <summary>
-    /// Provides information about a state machine.
+    /// Gets the id of the current state.
     /// </summary>
-    /// <typeparam name="TState">The type of the state.</typeparam>
-    /// <typeparam name="TEvent">The type of the event.</typeparam>
-    // ReSharper disable once UnusedTypeParameter because of symmetry with all other interface declarations (all have states and events)
-    public interface IStateMachineInformation<out TState, TEvent>
-        where TState : IComparable
-        where TEvent : IComparable
+    /// <value>The id of the current state.</value>
+    TState CurrentStateId
     {
-        /// <summary>
-        /// Gets the name of this instance.
-        /// </summary>
-        /// <value>The name of this instance.</value>
-        string Name { get; }
-
-        /// <summary>
-        /// Gets the id of the current state.
-        /// </summary>
-        /// <value>The id of the current state.</value>
-        TState CurrentStateId { get; }
+      get;
     }
+  }
 }

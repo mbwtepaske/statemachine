@@ -18,27 +18,33 @@
 
 namespace Appccelerate.StateMachine.Machine
 {
-    using System;
+  using System;
+
+  /// <summary>
+  /// Represents the result of a transition.
+  /// </summary>
+  /// <typeparam name="TState">The type of the state.</typeparam>
+  /// <typeparam name="TEvent">The type of the event.</typeparam>
+  public interface ITransitionResult<TState, TEvent>
+    where TState : IComparable
+    where TEvent : IComparable
+  {
+    /// <summary>
+    /// Gets a value indicating whether this <see cref="ITransitionResult{TState, TEvent}"/> is fired.
+    /// </summary>
+    /// <value><c>true</c> if fired; otherwise, <c>false</c>.</value>
+    bool Fired
+    {
+      get;
+    }
 
     /// <summary>
-    /// Represents the result of a transition.
+    /// Gets the new state.
     /// </summary>
-    /// <typeparam name="TState">The type of the state.</typeparam>
-    /// <typeparam name="TEvent">The type of the event.</typeparam>
-    public interface ITransitionResult<TState, TEvent>
-        where TState : IComparable
-        where TEvent : IComparable
+    /// <value>The new state.</value>
+    IState<TState, TEvent> NewState
     {
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="ITransitionResult{TState, TEvent}"/> is fired.
-        /// </summary>
-        /// <value><c>true</c> if fired; otherwise, <c>false</c>.</value>
-        bool Fired { get; }
-
-        /// <summary>
-        /// Gets the new state.
-        /// </summary>
-        /// <value>The new state.</value>
-        IState<TState, TEvent> NewState { get; }
+      get;
     }
+  }
 }

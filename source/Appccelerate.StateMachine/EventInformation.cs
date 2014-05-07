@@ -18,19 +18,27 @@
 
 namespace Appccelerate.StateMachine
 {
-    using System;
+  using System;
 
-    public class EventInformation<TEvent>
-        where TEvent : IComparable
+  public class EventInformation<TEvent>
+    where TEvent : IComparable
+  {
+    public EventInformation(TEvent eventId, object eventArgument)
     {
-        public EventInformation(TEvent eventId, object eventArgument)
-        {
-            this.EventId = eventId;
-            this.EventArgument = eventArgument;
-        }
-
-        public TEvent EventId { get; private set; }
-
-        public object EventArgument { get; private set; }
+      this.EventId = eventId;
+      this.EventArgument = eventArgument;
     }
+
+    public TEvent EventId
+    {
+      get;
+      private set;
+    }
+
+    public object EventArgument
+    {
+      get;
+      private set;
+    }
+  }
 }

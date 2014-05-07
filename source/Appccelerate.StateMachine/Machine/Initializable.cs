@@ -18,60 +18,64 @@
 
 namespace Appccelerate.StateMachine.Machine
 {
-    using System;
+  using System;
+
+  /// <summary>
+  /// A value which can be initialized.
+  /// </summary>
+  /// <typeparam name="T">Type of the value.</typeparam>
+  public class Initializable<T>
+  {
+    private T value;
 
     /// <summary>
-    /// A value which can be initialized.
+    /// Gets or sets the value.
     /// </summary>
-    /// <typeparam name="T">Type of the value.</typeparam>
-    public class Initializable<T>
+    /// <value>The value.</value>
+    public T Value
     {
-        private T value;
+      get
+      {
+        this.CheckInitialized();
 
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        /// <value>The value.</value>
-        public T Value
-        {
-            get
-            {
-                this.CheckInitialized();
+        return this.value;
+      }
 
-                return this.value;
-            }
+      set
+      {
+        this.CheckNotAlreadyInitialized();
 
-            set
-            {
-                this.CheckNotAlreadyInitialized();
+        this.IsInitialized = true;
 
-                this.IsInitialized = true;
-
-                this.value = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is initialized (has a set value).
-        /// </summary>
-        /// <value><c>true</c> if this instance is initialized; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsInitialized { get; private set; }
-
-        private void CheckInitialized()
-        {
-            if (!this.IsInitialized)
-            {
-                throw new InvalidOperationException(ExceptionMessages.ValueNotInitialized);
-            }
-        }
-
-        private void CheckNotAlreadyInitialized()
-        {
-            if (this.IsInitialized)
-            {
-                throw new InvalidOperationException(ExceptionMessages.ValueAlreadyInitialized);
-            }
-        }
+        this.value = value;
+      }
     }
+
+    /// <summary>
+    /// Gets a value indicating whether this instance is initialized (has a set value).
+    /// </summary>
+    /// <value><c>true</c> if this instance is initialized; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsInitialized
+    {
+      get;
+      private set;
+    }
+
+    private void CheckInitialized()
+    {
+      if (!this.IsInitialized)
+      {
+        throw new InvalidOperationException(ExceptionMessages.ValueNotInitialized);
+      }
+    }
+
+    private void CheckNotAlreadyInitialized()
+    {
+      if (this.IsInitialized)
+      {
+        throw new InvalidOperationException(ExceptionMessages.ValueAlreadyInitialized);
+      }
+    }
+  }
 }

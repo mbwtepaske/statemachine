@@ -18,31 +18,33 @@
 
 namespace Appccelerate.StateMachine.Machine.ActionHolders
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
+  using System;
+  using System.Linq;
+  using System.Reflection;
+  using System.Runtime.CompilerServices;
 
-    public class ParametrizedActionHolder<T> : IActionHolder
+  public class ParametrizedActionHolder<T> : IActionHolder
+  {
+    private readonly Action<T> action;
+
+    private readonly T parameter;
+
+    public ParametrizedActionHolder(Action<T> action, T parameter)
     {
-        private readonly Action<T> action;
-
-        private readonly T parameter;
-
-        public ParametrizedActionHolder(Action<T> action, T parameter)
-        {
-            this.action = action;
-            this.parameter = parameter;
-        }
-
-        public void Execute(object argument)
-        {
-            this.action(this.parameter);
-        }
-
-        public string Describe()
-        {
-            return this.action.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.GetMethodInfo().Name;
-        }
+      this.action = action;
+      this.parameter = parameter;
     }
+
+    public void Execute(object argument)
+    {
+      this.action(this.parameter);
+    }
+
+    public string Describe()
+    {
+      return this.action.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any()
+        ? "anonymous"
+        : this.action.GetMethodInfo().Name;
+    }
+  }
 }

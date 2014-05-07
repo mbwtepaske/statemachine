@@ -18,28 +18,37 @@
 
 namespace Appccelerate.StateMachine.Machine
 {
-    using System;
+  using System;
 
-    /// <summary>
-    /// Provides information about the current transition.
-    /// </summary>
-    /// <typeparam name="TState">The type of the state.</typeparam>
-    /// <typeparam name="TEvent">The type of the event.</typeparam>
-    public interface ITransitionContext<TState, TEvent>
-        where TState : IComparable where TEvent : IComparable
+  /// <summary>
+  /// Provides information about the current transition.
+  /// </summary>
+  /// <typeparam name="TState">The type of the state.</typeparam>
+  /// <typeparam name="TEvent">The type of the event.</typeparam>
+  public interface ITransitionContext<TState, TEvent>
+    where TState : IComparable where TEvent : IComparable
+  {
+    IState<TState, TEvent> State
     {
-        IState<TState, TEvent> State { get; }
-
-        Missable<TEvent> EventId { get; }
-
-        object EventArgument { get; }
-
-        void AddRecord(TState stateId, RecordType recordType);
-
-        string GetRecords();
-
-        void OnExceptionThrown(Exception exception);
-
-        void OnTransitionBegin();
+      get;
     }
+
+    Missable<TEvent> EventId
+    {
+      get;
+    }
+
+    object EventArgument
+    {
+      get;
+    }
+
+    void AddRecord(TState stateId, RecordType recordType);
+
+    string GetRecords();
+
+    void OnExceptionThrown(Exception exception);
+
+    void OnTransitionBegin();
+  }
 }

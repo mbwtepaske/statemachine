@@ -18,28 +18,30 @@
 
 namespace Appccelerate.StateMachine.Machine.ActionHolders
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
+  using System;
+  using System.Linq;
+  using System.Reflection;
+  using System.Runtime.CompilerServices;
 
-    public class ArgumentLessActionHolder : IActionHolder
+  public class ArgumentLessActionHolder : IActionHolder
+  {
+    private readonly Action action;
+
+    public ArgumentLessActionHolder(Action action)
     {
-        private readonly Action action;
-
-        public ArgumentLessActionHolder(Action action)
-        {
-            this.action = action;
-        }
-
-        public void Execute(object argument)
-        {
-            this.action();
-        }
-
-        public string Describe()
-        {
-            return this.action.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.GetMethodInfo().Name;
-        }
+      this.action = action;
     }
+
+    public void Execute(object argument)
+    {
+      this.action();
+    }
+
+    public string Describe()
+    {
+      return this.action.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any()
+        ? "anonymous"
+        : this.action.GetMethodInfo().Name;
+    }
+  }
 }

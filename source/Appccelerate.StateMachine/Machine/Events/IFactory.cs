@@ -18,35 +18,34 @@
 
 namespace Appccelerate.StateMachine.Machine.Events
 {
-    using System;
+  using System;
+  using Machine.ActionHolders;
+  using Machine.GuardHolders;
 
-    using Appccelerate.StateMachine.Machine.ActionHolders;
-    using Appccelerate.StateMachine.Machine.GuardHolders;
+  public interface IFactory<TState, TEvent>
+    where TState : IComparable
+    where TEvent : IComparable
+  {
+    IState<TState, TEvent> CreateState(TState id);
 
-    public interface IFactory<TState, TEvent>
-        where TState : IComparable
-        where TEvent : IComparable
-    {
-        IState<TState, TEvent> CreateState(TState id);
+    ITransition<TState, TEvent> CreateTransition();
 
-        ITransition<TState, TEvent> CreateTransition();
+    IActionHolder CreateActionHolder(Action action);
 
-        IActionHolder CreateActionHolder(Action action);
+    IActionHolder CreateActionHolder<T>(Action<T> action);
 
-        IActionHolder CreateActionHolder<T>(Action<T> action);
+    IActionHolder CreateActionHolder<T>(Action<T> action, T parameter);
 
-        IActionHolder CreateActionHolder<T>(Action<T> action, T parameter);
+    IActionHolder CreateTransitionActionHolder(Action action);
 
-        IActionHolder CreateTransitionActionHolder(Action action);
+    IActionHolder CreateTransitionActionHolder<T>(Action<T> action);
 
-        IActionHolder CreateTransitionActionHolder<T>(Action<T> action);
+    IGuardHolder CreateGuardHolder(Func<bool> guard);
 
-        IGuardHolder CreateGuardHolder(Func<bool> guard);
+    IGuardHolder CreateGuardHolder<T>(Func<T, bool> guard);
 
-        IGuardHolder CreateGuardHolder<T>(Func<T, bool> guard);
-        
-        ITransitionContext<TState, TEvent> CreateTransitionContext(IState<TState, TEvent> state, Missable<TEvent> eventId, object eventArgument, INotifier<TState, TEvent> notifier);
+    ITransitionContext<TState, TEvent> CreateTransitionContext(IState<TState, TEvent> state, Missable<TEvent> eventId, Object eventArgument, INotifier<TState, TEvent> notifier);
 
-        StateMachineInitializer<TState, TEvent> CreateStateMachineInitializer(IState<TState, TEvent> initialState, ITransitionContext<TState, TEvent> context);
-    }
+    StateMachineInitializer<TState, TEvent> CreateStateMachineInitializer(IState<TState, TEvent> initialState, ITransitionContext<TState, TEvent> context);
+  }
 }

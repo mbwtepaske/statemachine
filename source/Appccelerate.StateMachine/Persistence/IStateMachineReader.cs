@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="IStateMachineSaver.cs" company="Appccelerate">
+// <copyright file="IStateMachineLoader.cs" company="Appccelerate">
 //   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,24 +18,23 @@
 
 namespace Appccelerate.StateMachine.Persistence
 {
-    using System;
-    using System.Collections.Generic;
+  using System;
+  using System.Collections.Generic;
+  using Machine;
 
-    using Appccelerate.StateMachine.Machine;
+  public interface IStateMachineReader<TState>
+    where TState : IComparable
+  {
+    /// <summary>
+    /// Returns the state to be set as the current state of the state machine.
+    /// </summary>
+    /// <returns>State id.</returns>
+    Initializable<TState> LoadCurrentState();
 
-    public interface IStateMachineSaver<TState>
-        where TState : IComparable
-    {
-        /// <summary>
-        /// Saves the current state of the state machine.
-        /// </summary>
-        /// <param name="currentStateId">Id of the current state.</param>
-        void SaveCurrentState(Initializable<TState> currentStateId);
-
-        /// <summary>
-        /// Saves the last active states of all super states.
-        /// </summary>
-        /// <param name="historyStates">Key = id of the super state; Value = if of last active state of super state.</param>
-        void SaveHistoryStates(IDictionary<TState, TState> historyStates);
-    }
+    /// <summary>
+    /// Returns the last active state of all super states that have a last active state (i.e. they count as visited).
+    /// </summary>
+    /// <returns>Key = id of super state, Value = id of last active state.</returns>
+    IDictionary<TState, TState> LoadHistoryStates();
+  }
 }

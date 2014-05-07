@@ -18,13 +18,13 @@
 
 namespace Appccelerate.StateMachine.Machine
 {
-    using System;
+  using System;
 
-    public class StateMachineException : Exception
+  public class StateMachineException : Exception
+  {
+    public StateMachineException(string message, Exception innerException)
+      : base(message, innerException)
     {
-        public StateMachineException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
     }
+  }
 }

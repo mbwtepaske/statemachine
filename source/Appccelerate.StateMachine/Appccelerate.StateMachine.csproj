@@ -95,15 +95,11 @@
     <Compile Include="Machine\Transitions\TransitionResult.cs" />
     <Compile Include="Machine\Transitions\TransitionsExceptionMessages.cs" />
     <Compile Include="PassiveStateMachine.cs" />
-    <Compile Include="Persistence\IStateMachineLoader.cs" />
-    <Compile Include="Persistence\IStateMachineSaver.cs" />
+    <Compile Include="Persistence\IStateMachineReader.cs" />
+    <Compile Include="Persistence\IStateMachineWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\GlobalAssemblyInfo.cs" />
-    <Compile Include="Reports\CsvStateMachineReportGenerator.cs" />
-    <Compile Include="Reports\CsvStatesWriter.cs" />
-    <Compile Include="Reports\CsvTransitionsWriter.cs" />
     <Compile Include="Reports\StateMachineReportGenerator.cs" />
-    <Compile Include="Reports\YEdStateMachineReportGenerator.cs" />
     <Compile Include="Syntax\IEntryActionSyntax.cs" />
     <Compile Include="Syntax\IEventSyntax.cs" />
     <Compile Include="Syntax\IExitActionSyntax.cs" />
@@ -117,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Appccelerate.Fundamentals">
-      <HintPath>..\packages\Appccelerate.Fundamentals.2.1.0-Unstable31\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
+      <HintPath>..\packages\Appccelerate.Fundamentals.2.1.0\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

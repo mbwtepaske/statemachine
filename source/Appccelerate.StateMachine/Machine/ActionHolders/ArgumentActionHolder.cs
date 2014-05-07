@@ -18,40 +18,43 @@
 
 namespace Appccelerate.StateMachine.Machine.ActionHolders
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
+  using System;
+  using System.Linq;
+  using System.Reflection;
+  using System.Runtime.CompilerServices;
 
-    public class ArgumentActionHolder<T> : IActionHolder
+  public class ArgumentActionHolder<T> : IActionHolder
+  {
+    private readonly Action<T> action;
+
+    public ArgumentActionHolder(Action<T> action)
     {
-        private readonly Action<T> action;
-
-        public ArgumentActionHolder(Action<T> action)
-        {
-            this.action = action;
-        }
-
-        public void Execute(object argument)
-        {
-            T castArgument = default(T);
-
-            if (argument != Missing.Value && !(argument is T))
-            {
-                throw new ArgumentException(ActionHoldersExceptionMessages.CannotCastArgumentToActionArgument(argument, this.Describe()));
-            }
-
-            if (argument != Missing.Value)
-            {
-                castArgument = (T)argument;
-            }
-
-            this.action(castArgument);
-        }
-
-        public string Describe()
-        {
-            return this.action.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.GetMethodInfo().Name;
-        }
+      this.action = action;
     }
+
+    public void Execute(object argument)
+    {
+      T castArgument = default(T);
+
+      if (argument != Missing.Value && !(argument is T))
+      {
+        throw new ArgumentException(ActionHoldersExceptionMessages.CannotCastArgumentToActionArgument(argument,
+          this.Describe()));
+      }
+
+      if (argument != Missing.Value)
+      {
+        castArgument = (T) argument;
+      }
+
+      this.action(castArgument);
+    }
+
+    public string Describe()
+    {
+      return this.action.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any()
+        ? "anonymous"
+        : this.action.GetMethodInfo().Name;
+    }
+  }
 }

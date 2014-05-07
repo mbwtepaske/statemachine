@@ -18,68 +18,67 @@
 
 namespace Appccelerate.StateMachine.Machine
 {
-    using System;
-    
-    using Appccelerate.StateMachine.Syntax;
+  using System;
+  using Syntax;
 
-    public class HierarchyBuilder<TState, TEvent> : 
-        IHierarchySyntax<TState>, 
-        IInitialSubStateSyntax<TState>,
-        ISubStateSyntax<TState>
-        where TState : IComparable
-        where TEvent : IComparable
+  public class HierarchyBuilder<TState, TEvent> :
+    IHierarchySyntax<TState>,
+    IInitialSubStateSyntax<TState>,
+    ISubStateSyntax<TState>
+    where TState : IComparable
+    where TEvent : IComparable
+  {
+    private readonly IStateDictionary<TState, TEvent> states;
+
+    private readonly IState<TState, TEvent> superState;
+
+    public HierarchyBuilder(IStateDictionary<TState, TEvent> states, TState superStateId)
     {
-        private readonly IStateDictionary<TState, TEvent> states;
+      Ensure.ArgumentNotNull(states, "states");
 
-        private readonly IState<TState, TEvent> superState;
-
-        public HierarchyBuilder(IStateDictionary<TState, TEvent> states, TState superStateId)
-        {
-            Ensure.ArgumentNotNull(states, "states");
-
-            this.states = states;
-            this.superState = this.states[superStateId];
-        }
-
-        public IInitialSubStateSyntax<TState> WithHistoryType(HistoryType historyType)
-        {
-            this.superState.HistoryType = historyType;
-
-            return this;
-        }
-
-        public ISubStateSyntax<TState> WithInitialSubState(TState stateId)
-        {
-            this.WithSubState(stateId);
-
-            this.superState.InitialState = this.states[stateId];
-
-            return this;
-        }
-
-        public ISubStateSyntax<TState> WithSubState(TState stateId)
-        {
-            var subState = this.states[stateId];
-
-            this.CheckThatStateHasNotAlreadyASuperState(subState);
-            
-            subState.SuperState = this.superState;
-            this.superState.SubStates.Add(subState);
-
-            return this;
-        }
-
-        private void CheckThatStateHasNotAlreadyASuperState(IState<TState, TEvent> subState)
-        {
-            Ensure.ArgumentNotNull(subState, "subState");
-
-            if (subState.SuperState != null)
-            {
-                throw new InvalidOperationException(
-                    ExceptionMessages.CannotSetStateAsASuperStateBecauseASuperStateIsAlreadySet(
-                        this.superState.Id, 
-                        subState));
-            }
-        }
+      this.states = states;
+      this.superState = this.states[superStateId];
     }
+
+    public IInitialSubStateSyntax<TState> WithHistoryType(HistoryType historyType)
+    {
+      this.superState.HistoryType = historyType;
+
+      return this;
+    }
+
+    public ISubStateSyntax<TState> WithInitialSubState(TState stateId)
+    {
+      this.WithSubState(stateId);
+
+      this.superState.InitialState = this.states[stateId];
+
+      return this;
+    }
+
+    public ISubStateSyntax<TState> WithSubState(TState stateId)
+    {
+      var subState = this.states[stateId];
+
+      this.CheckThatStateHasNotAlreadyASuperState(subState);
+
+      subState.SuperState = this.superState;
+      this.superState.SubStates.Add(subState);
+
+      return this;
+    }
+
+    private void CheckThatStateHasNotAlreadyASuperState(IState<TState, TEvent> subState)
+    {
+      Ensure.ArgumentNotNull(subState, "subState");
+
+      if (subState.SuperState != null)
+      {
+        throw new InvalidOperationException(
+          ExceptionMessages.CannotSetStateAsASuperStateBecauseASuperStateIsAlreadySet(
+            this.superState.Id,
+            subState));
+      }
+    }
+  }
 }

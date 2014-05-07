@@ -18,25 +18,24 @@
 
 namespace Appccelerate.StateMachine.Machine
 {
-    using System;
-    using System.Collections.Generic;
+  using System;
+  using System.Collections.Generic;
+  using Machine.Transitions;
 
-    using Appccelerate.StateMachine.Machine.Transitions;
+  public interface ITransitionDictionary<TState, TEvent>
+    where TState : IComparable where TEvent : IComparable
+  {
+    /// <summary>
+    /// Adds the specified event id.
+    /// </summary>
+    /// <param name="eventId">The event id.</param>
+    /// <param name="transition">The transition.</param>
+    void Add(TEvent eventId, ITransition<TState, TEvent> transition);
 
-    public interface ITransitionDictionary<TState, TEvent>
-        where TState : IComparable where TEvent : IComparable
-    {
-        /// <summary>
-        /// Adds the specified event id.
-        /// </summary>
-        /// <param name="eventId">The event id.</param>
-        /// <param name="transition">The transition.</param>
-        void Add(TEvent eventId, ITransition<TState, TEvent> transition);
-
-        /// <summary>
-        /// Gets all transitions.
-        /// </summary>
-        /// <returns>All transitions.</returns>
-        IEnumerable<TransitionInfo<TState, TEvent>> GetTransitions();
-    }
+    /// <summary>
+    /// Gets all transitions.
+    /// </summary>
+    /// <returns>All transitions.</returns>
+    IEnumerable<TransitionInfo<TState, TEvent>> GetTransitions();
+  }
 }
